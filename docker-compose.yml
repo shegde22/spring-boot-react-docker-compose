@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  web:
+    build:
+      context: ./sr-rest
+      dockerfile: Dockerfile
+    image: sr-rest-dev  
+    ports:
+      - '8080:8080'
+# command: java -jar /studentRegistration/app.jar
+#    command: mvn spring-boot:run -Drun.jvmArguments="-Dserver.port=8080"
+
+  client:
+    build: 
+      context: ./sr-client
+      dockerfile: Dockerfile
+    image: sr-client-dev
+    volumes:
+      - ./sr-client:/usr/src/app
+    ports:
+      - '3000:3000'
+    depends_on:
+      - web
+    command: npm start

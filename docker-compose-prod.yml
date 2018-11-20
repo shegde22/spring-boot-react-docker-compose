@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  web:
+    build: 
+      context: ./sr-rest
+      dockerfile: Dockerfile-prod
+    image: sr-rest-prod
+    command: java -Djava.security.edg=file:/dev/./urandom -jar /app.jar
+
+  client:
+    build: 
+      container: ./sr-client
+      dockerfile: Dockerfile-prod
+    image: sr-client-prod
+    ports:
+      - '80:80'
+    depends_on:
+      - web
+    command: nginx -g "daemon off;"
