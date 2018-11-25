@@ -8,6 +8,7 @@ import { Enrollments } from './components/enrollments';
 import { TAs } from './components/tas';
 import Logs from './components/logs';
 import { Prerequisites } from './components/prerequisites';
+import ReactLoading from 'react-loading';
 
 class App extends Component {
   render() {
@@ -34,6 +35,7 @@ class App extends Component {
 function routedComponents() {
   return (
     <div className="flex-column flex-grow-1 m-4">
+      <Route exact path="/" component={Landing} />
       <Route path="/students" component={Students} />
       <Route path="/courses" component={Courses} />
       <Route path="/classes" component={Classes} />
@@ -44,4 +46,16 @@ function routedComponents() {
     </div>
   );
 }
+
+function Landing() {
+  return (
+    <div className="container-fluid">
+      <p>
+        <h1>Database Systems project</h1>
+        <h3 className="m-4">Welcome!</h3>
+      </p>
+    </div>
+  );
+}
+
 export default App;

@@ -41,6 +41,7 @@ class DropTAForm extends Component {
               name="bnum"
               value={this.state.bnum}
               onChange={this.onChange}
+              required
             />
           </div>
         </div>

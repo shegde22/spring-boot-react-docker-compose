@@ -52,6 +52,10 @@ class AddCourseForm extends Component {
         newCourse.id.coursenum
       }`
     );
+    if (this.state.deptcode && this.state.deptcode.length > 4) {
+      this.setState({ errors: ['Deptcode should be 4 letters max'] });
+      return;
+    }
     // TODO, CHANGE URI FOR UPDATE
     try {
       if (this.state.isUpdate) {
@@ -105,6 +109,7 @@ class AddCourseForm extends Component {
               className="form-control"
               name="deptcode"
               value={this.state.deptcode}
+              maxLength="4"
               onChange={this.onChange}
               required
               disabled={this.state.isUpdate}
@@ -136,6 +141,7 @@ class AddCourseForm extends Component {
               name="title"
               value={this.state.title}
               onChange={this.onChange}
+              required
             />
           </div>
         </div>

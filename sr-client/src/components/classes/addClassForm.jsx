@@ -174,6 +174,7 @@ class AddClassForm extends Component {
               name="sect"
               value={this.state.sect || ''}
               onChange={this.onChange}
+              min="1"
             />
           </div>
         </div>
@@ -186,6 +187,7 @@ class AddClassForm extends Component {
               name="room"
               value={this.state.room || ''}
               onChange={this.onChange}
+              maxLength="10"
             />
           </div>
         </div>

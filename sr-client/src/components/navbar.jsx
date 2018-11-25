@@ -11,7 +11,7 @@ class NavBar extends Component {
     console.log(window.location.toString().split(/\//));
     const activeIndex = window.location.toString().split(/\//)[SECTION_INDEX];
     return (
-      <nav className="nav flex-column flex-grow-0 mt-4">
+      <nav className="nav flex-column flex-grow-0 mt-4 mb-4">
         <div className="list-group">
           {routes.map((r, i) => {
             return (

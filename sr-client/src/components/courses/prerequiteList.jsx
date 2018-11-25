@@ -7,15 +7,19 @@ class PrerequisiteList extends Component {
       courses = this.props.location.state.prerequisites;
       console.log(courses);
     }
-    return courses
-      .filter(c => c)
-      .map((c, i) => {
-        return (
-          <div key={c} className="row m-1 p-1 border">
-            Prerequisite #{i + 1}: {c || ''}
-          </div>
-        );
-      });
+    return (
+      <div className="border">
+        {courses
+          .filter(c => c)
+          .map((c, i) => {
+            return (
+              <div key={c} className="row m-1 p-1">
+                Prerequisite #{i + 1}: {c || ''}
+              </div>
+            );
+          })}
+      </div>
+    );
   }
 }
 

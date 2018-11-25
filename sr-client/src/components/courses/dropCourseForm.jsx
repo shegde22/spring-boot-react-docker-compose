@@ -46,6 +46,7 @@ class DropCourseForm extends Component {
               name="deptcode"
               value={this.state.deptcode}
               onChange={this.onChange}
+              maxLength="4"
               required
             />
           </div>

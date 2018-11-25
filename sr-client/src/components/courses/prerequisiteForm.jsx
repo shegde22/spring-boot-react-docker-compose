@@ -61,6 +61,7 @@ class PrerequisiteForm extends Component {
               className="form-control"
               name="dept"
               value={this.state.dept}
+              maxLength="4"
               onChange={this.onChange}
               required
             />
