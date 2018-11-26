@@ -1,10 +1,9 @@
 #studentRegistration
 
 # Steps:
-1. Update ./sr-rest/:
+1. Create a file ./sr-rest/src/main/resources/application.properties and add the following lines to it:
 
-DATA SOURCE
-
+"
 spring.datasource.driverClassName=<jdbcDriver>
 
 spring.datasource.url=<jdbcUrl>
@@ -26,3 +25,4 @@ spring.jpa.properties.hibernate.dialect=<org.hibernate.dialect.Oracle12cDialect>
 spring.devtools.remote.secret=<thisismysecret>
 
 spring.devtools.livereload.port=<35730>
+"
