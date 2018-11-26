@@ -52,7 +52,6 @@ class DropEnrollForm extends Component {
               className="form-control"
               name="bnum"
               placeholder="Bxxx"
-              pattern="^B[\w]{0,3}"
               value={this.state.bnum}
               onChange={this.onChange}
               required
@@ -67,7 +66,6 @@ class DropEnrollForm extends Component {
               className="form-control"
               name="classid"
               placeholder="cxxxx"
-              pattern="^c[\w]{0,4}"
               value={this.state.classid}
               onChange={this.onChange}
               required

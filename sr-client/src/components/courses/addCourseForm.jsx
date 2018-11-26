@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import uri from '../../config/uri';
+import { courseExists } from '../../validations/validations';
 
 class AddCourseForm extends Component {
   state = {
@@ -56,7 +57,7 @@ class AddCourseForm extends Component {
       this.setState({ errors: ['Deptcode should be 4 letters max'] });
       return;
     }
-    // TODO, CHANGE URI FOR UPDATE
+
     try {
       if (this.state.isUpdate) {
         // Update course
@@ -71,6 +72,12 @@ class AddCourseForm extends Component {
           this.setState({ errors: result.data.errors });
         } else this.setState({ submitted: true });
       } else {
+        if (await courseExists(this.state.deptcode, this.state.coursenum)) {
+          this.setState({
+            errors: [`${this.state.deptcode}${this.state.coursenum} exists`]
+          });
+          return;
+        }
         const result = await axios.post(`${uri}/courses`, newCourse);
         // console.log(result);
         if (result.data.errors && result.data.errors.length !== 0) {

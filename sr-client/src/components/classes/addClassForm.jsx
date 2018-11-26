@@ -17,7 +17,7 @@ class AddClassForm extends Component {
     room: '',
     errors: [],
     taOptions: [],
-    semesterOptions: ['Summer 1', 'Summer 2', 'Fall', 'Spring'],
+    semesterOptions: ['Summer 1', 'Summer 2', 'Fall', 'Spring', ''],
     submitted: false,
     populated: false,
     isUpdate: false
@@ -51,6 +51,11 @@ class AddClassForm extends Component {
       return;
     }
 
+    if (!newClass.classid.match(/^c[\w]{0,4}/)) {
+      this.setState({ errors: ['Classid should be of the format cxxxx'] });
+      return;
+    }
+
     if (!(await courseExists(newClass.deptcode, newClass.coursenum))) {
       this.setState({
         errors: [`No course ${newClass.deptcode}${newClass.coursenum}`]
@@ -69,7 +74,11 @@ class AddClassForm extends Component {
           this.setState({ errors: result.data.errors });
         } else this.setState({ submitted: true });
       } else {
-        newClass.classSize = 0;
+        if (await classExists(this.state.classid)) {
+          this.setState({ errors: ['Class with given classid exists'] });
+          return;
+        }
+        newClass.classSize = newClass.classSize || 0;
         const result = await axios.post(`${uri}/classes`, newClass);
         console.log(result);
         if (result.data.errors.length !== 0) {
@@ -115,7 +124,6 @@ class AddClassForm extends Component {
               className="form-control"
               name="classid"
               placeholder="cxxxx"
-              pattern="^c[\w]{0,4}"
               value={this.state.classid}
               onChange={this.onChange}
               required
@@ -259,6 +267,21 @@ class AddClassForm extends Component {
       </form>
     );
   }
+}
+
+async function classExists(classid) {
+  let exists = false;
+  try {
+    const response = await axios.get(`${uri}/classes/${classid}`);
+    if (response.data.errors && response.data.errors.length > 0) {
+      exists = false;
+    } else {
+      if (response.data.class) exists = true;
+    }
+  } catch (err) {
+    console.error(err);
+  }
+  return exists;
 }
 
 export default AddClassForm;

@@ -8,7 +8,6 @@ import { Enrollments } from './components/enrollments';
 import { TAs } from './components/tas';
 import Logs from './components/logs';
 import { Prerequisites } from './components/prerequisites';
-import ReactLoading from 'react-loading';
 
 class App extends Component {
   render() {
