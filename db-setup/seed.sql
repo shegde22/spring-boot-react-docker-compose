@@ -8,7 +8,7 @@ insert into students values ('B007', 'Sreyas', 'Jadhav', 'MS', 3.1, 'sjad@bu.edu
 insert into students values ('B008', 'Ojas', 'Junarkr', 'MS', 3.5, 'oj@bu.edu', '23-DEC-95', 'SSIE');
 insert into students values ('B009', 'Prady', 'Kaushik', 'PhD', 3, 'pk@bu.edu', '18-MAR-91', 'CS');
 insert into students values ('B010', 'Anuja', 'Bhide', 'MS', 4, 'ab@bu.edu', '12-OCT-93', 'CS');
-insert into students values ('B011', 'Mrudula', 'Gole', 'MS', 3.7, 'mg@bu.edu', '24-SEPT-95', 'CS');
+insert into students values ('B011', 'Mrudula', 'Gole', 'MS', 3.7, 'mg@bu.edu', '24-OCT-95', 'CS');
 insert into students values ('B012', 'Neha', 'Klkrni', 'MS', 3.56, 'nk@bu.edu', '29-JUL-93', 'CS');
 
 insert into tas values ('B011', 'MS', 'EB G26');
