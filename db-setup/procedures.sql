@@ -144,8 +144,8 @@ procedure show_class_ta(cid in classes.classid%type) is
   fname students.first_name%type;
   lname students.last_name%type;
 begin
-  -- Check if record exists with given classid
-  -- rows will always be 1 when successfu
+  -- Automatically exception raised if classid is invalid
+  -- rows will always be 1 when successful
   select ta_B# into sb# from classes c where c.classid = cid;
   -- if no errors then bring in values after check
   if (sb# is not null) then
@@ -161,6 +161,7 @@ exception
     raise_application_error(-20010, 'The classid is invalid');
 end;
 
+-- Similar functional implementation to use in java code
 function getClassTa(cid in classes.classid%type)
 return sys_refcursor
 is
@@ -179,6 +180,8 @@ exception
     raise_application_error(-20010, 'The classid is invalid');
 end;
 
+
+-- Procedural implementation to be used in sqlplus
 procedure get_prerequisites(dc in courses.dept_code%type, co in courses.course#%type, cur out sys_refcursor) 
 is
   rows number;
@@ -200,6 +203,7 @@ return sys_refcursor
 is
   cur sys_refcursor;
 begin
+  -- hierarchical query to recursively find prerequisites of prerequisites
   open cur for
   select * from courses where dept_code in (
   select pre_dept_code from prerequisites start with dept_code = dc and course# = co
@@ -302,6 +306,7 @@ begin
   if (cur_pres != pres) then
     raise unsatisfied_pre;
   end if;
+  -- If all courses are not graded a minimum of C
   if (not pre_pass) then
     raise unsatisfied_pre;
   end if;
@@ -325,6 +330,7 @@ exception
     raise_application_error(-20010, 'Prerequisite not satisfied');
 end;
 
+-- Function used to check if any prerequisites are violated if the course is dropped
 function check_pre_v(bnum in students.b#%type, cid in classes.classid%type)
 return boolean is
   status boolean;
@@ -334,7 +340,7 @@ begin
   select dept_code, course# into dept, cnum from classes where classid = cid;
   status := true;
   declare
-    -- Check if need to only check for current semester
+    -- Go through all direct and indirect prerequisites
     cursor c is select pre_dept_code, pre_course# from prerequisites where dept_code = dept and course# = cnum
     connect by prior pre_dept_code = dept_code and prior pre_course# = course#;
   begin
@@ -404,6 +410,7 @@ exception
     raise_application_error(-20010, 'Prerequisite requirements violated');
 end;
 
+-- All consistency handled by triggers
 procedure drop_student(bnum in students.b#%type)
 is
   row number;

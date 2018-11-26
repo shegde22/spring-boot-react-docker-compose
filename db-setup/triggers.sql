@@ -1,4 +1,4 @@
--- trig_c_enroll
+-- Trigger on creating an enrollment for student
 create or replace trigger trig_enroll_student
 before insert on enrollments
 for each row
@@ -6,6 +6,7 @@ declare
 seats number;
 begin
 
+-- Check class size
 select (c.limit - c.class_size) into seats
 from classes c where c.classid = :new.classid;
 
@@ -20,7 +21,7 @@ end;
 /
 
 
--- trig_d_enroll
+-- Trigger on dropping a student from a course
 create or replace trigger trig_drop_enroll
 after delete on enrollments
 for each row
@@ -30,7 +31,7 @@ where classid = :old.classid;
 end;
 /
 
--- trig_d_student
+-- Trigger on deleting a student
 create or replace trigger trig_drop_student
 after delete on students
 for each row
@@ -48,10 +49,11 @@ delete from enrollments where b# = :old.b#;
 end;
 /
 
--- trig_log
+-- Sequence generator for log
 drop sequence log_sequence;
 create sequence log_sequence start with 100 increment by 1 order;
 
+-- Trigger to automatically insert log#
 create or replace trigger trig_log_number
 before insert on logs
 for each row
@@ -60,6 +62,7 @@ begin
 end;
 /
 
+-- Trigger to log information on deleting a student
 create or replace trigger trig_log_d_student
 after delete on students
 for each row
@@ -72,6 +75,7 @@ begin
 end;
 /
 
+-- Trigger to log info on enrolling a student
 create or replace trigger trig_log_i_enrollment
 after insert on enrollments
 for each row
@@ -84,6 +88,7 @@ begin
 end;
 /
 
+-- Trigger to log info on dropping a student from course
 create or replace trigger trig_log_d_enrollment
 after delete on enrollments
 for each row
@@ -96,7 +101,7 @@ begin
 end;
 /
 
--- trig_d_ta
+-- Trigger on dropping a TA
 create or replace trigger trig_drop_ta
 after delete on tas
 for each row
@@ -107,7 +112,7 @@ where ta_B# = :old.b#;
 end;
 /
 
--- trig_d_class
+-- Trigger on dropping a class
 create or replace trigger trig_drop_class
 before delete on classes
 for each row
