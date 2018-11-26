@@ -1,7 +1,7 @@
 #studentRegistration
 
 # Steps:
-1. Add application properties with following properties:
+1. Update ./sr-rest/:
 
 DATA SOURCE
 
