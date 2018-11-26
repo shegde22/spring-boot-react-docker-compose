@@ -61,6 +61,7 @@ class AddTAForm extends Component {
           this.setState({ errors: response.data.errors });
         else this.setState({ submitted: true });
       } else {
+        newTA.bnum = newTA.bnum || this.state.bnumOptions[0];
         newTA.taLevel = newTA.taLevel || 'MS';
         const response = await axios.post(`${uri}/tas`, newTA);
         if (response.data.errors && response.data.errors.length > 0)
