@@ -13,7 +13,6 @@ create or replace package proc as
   function getPrerequisites return sys_refcursor;
   procedure show_class_ta(cid in classes.classid%type);
   function getClassTa(cid in classes.classid%type) return sys_refcursor;
-  procedure get_prerequisites(dc in courses.dept_code%type, co in courses.course#%type, cur out sys_refcursor);
   function getAllPrerequisites(dc in courses.dept_code%type, co in courses.course#%type) return sys_refcursor;
   procedure enroll_student(bnum in students.b#%type, cid in classes.classid%type, courses out number);
   procedure drop_course(bnum in students.b#%type, cid in classes.classid%type, newSize out classes.class_size%type, newCourses out number);
@@ -180,24 +179,7 @@ exception
     raise_application_error(-20010, 'The classid is invalid');
 end;
 
-
--- Procedural implementation to be used in sqlplus
-procedure get_prerequisites(dc in courses.dept_code%type, co in courses.course#%type, cur out sys_refcursor) 
-is
-  rows number;
-  no_course exception;
-begin
-  select count(*) into rows from prerequisites where dept_code = dc and course# = co;
-  if (rows = 1) then
-    cur := getAllPrerequisites(dc, co);
-  else
-    raise no_course;
-  end if;
-exception
-  when no_course then
-    raise_application_error(-20010, dc || co || ' does not exists');
-end;
-
+-- function to return cursor of all indirect and direct prerequisites
 function getAllPrerequisites(dc in courses.dept_code%type, co in courses.course#%type)
 return sys_refcursor
 is
