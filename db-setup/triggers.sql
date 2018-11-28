@@ -20,6 +20,16 @@ end if;
 end;
 /
 
+-- Trigger before creating a class
+create or replace trigger trig_c_class
+before insert on classes
+for each row
+begin
+if (:new.class_size < 0) then
+raise_application_error(-20010, 'Class size cannot be less than 0');
+end if;
+end;
+/
 
 -- Trigger on dropping a student from a course
 create or replace trigger trig_drop_enroll
