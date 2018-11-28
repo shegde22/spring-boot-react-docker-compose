@@ -223,6 +223,7 @@ class AddClassForm extends Component {
               type="number"
               className="form-control"
               name="classSize"
+              min="0"
               value={this.state.classSize || ''}
               onChange={this.onChange}
             />
