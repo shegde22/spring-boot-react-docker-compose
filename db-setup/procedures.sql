@@ -318,20 +318,18 @@ return boolean is
   status boolean;
   dept classes.dept_code%type;
   cnum classes.course#%type;
+  cursor cur is (select * from prerequisites where dept_code in (select dept_code from
+  students s, enrollments e, classes c where s.b# = e.b# and c.classid = e.classid)
+  and course# in (select course# from students s, enrollments e, classes c where s.b# = e.b#
+  and c.classid  = e.classid));
 begin
   select dept_code, course# into dept, cnum from classes where classid = cid;
   status := true;
-  declare
-    -- Go through all direct and indirect prerequisites
-    cursor c is select pre_dept_code, pre_course# from prerequisites where dept_code = dept and course# = cnum
-    connect by prior pre_dept_code = dept_code and prior pre_course# = course#;
-  begin
-    for rec in c loop
-      if (dept = rec.pre_dept_code and cnum = rec.pre_course#) then
-        status := false;
-      end if;
-    end loop;
-  end;
+  for rec in cur loop
+    if (rec.pre_dept_code = dept and rec.pre_course# = cnum) then
+      status:= false;
+    end if;
+  end loop;
   return status;
 end check_pre_v;
 
@@ -340,6 +338,8 @@ is
   -- Variables
   status boolean;
   row number;
+  sem classes.semester%type;
+  yr classes.year%type;
   -- Exceptions
   no_student exception;
   no_class exception;
@@ -357,6 +357,14 @@ begin
   if (row = 0) then
     raise no_class;
   end if;
+ 
+  -- Check if in current semester
+  select semester into sem from classes where classid = cid;
+  select year into yr from classes where classid = cid;
+  if (sem != 'Fall' and yr != 2018) then
+    raise invalid_sem;
+  end if;
+
   -- check if enrollment exists
   select count(*) into row from enrollments where b# = bnum and classid = cid;
   if (row = 0) then
