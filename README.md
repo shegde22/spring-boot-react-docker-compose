@@ -2,7 +2,7 @@
 
 # Steps:
 1. Install docker-compose: https://docs.docker.com/compose/install/#prerequisites 
-2. Setup Proxy connection via ssl.binghamton.edu (Pulse secure)  
+2. Setup Proxy connection via ssl.binghamton.edu (Pulse secure, Also add application.properties)
 3. Run command
   > docker-compose up
 
